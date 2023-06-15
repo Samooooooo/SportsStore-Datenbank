@@ -1,0 +1,32 @@
+﻿@model IEnumerable<string>
+
+<style>
+  .btn-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+    .btn-container .btn {
+      flex: 2 1 100px; /* Adjust the width as per your requirements */
+      margin: 4px 7px 2px 4px;
+    }
+</style>
+
+<div class="btn-container ">
+  <a asp-action="Index" asp-route-category="" asp-route-productPage="1"
+     class="btn btn-block btn-width @(String.IsNullOrEmpty(ViewBag.SelectedCategory)
+        ? "btn-primary"
+        :"btn-outline-secondary")">Home</a>
+
+  @foreach (var item in Model)
+  {
+    <a asp-action="Index" asp-route-category="@item"
+       asp-route-productPage="1"
+       class="btn btn-block btn-width  @(item == ViewBag.SelectedCategory
+        ? "btn-primary"
+        : "btn-outline-secondary")">
+      @item
+    </a>
+  }
+  @*<a asp-action="AllP">all</a>*@
+</div>

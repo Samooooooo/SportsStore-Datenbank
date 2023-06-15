@@ -1,0 +1,15 @@
+﻿@model Product
+<tr>
+  <td>@Model.ProductID</td>
+  <td>@Model.Name</td>
+  <td>@Model.Discription</td>
+  <td>@Model.Category</td>
+  <td class="">
+    @Model.Price.ToString("c")
+    <form asp-action="Cart" method="post">
+      <input type="hidden" asp-for="ProductID" />
+      <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+      <button type="submit" style="float:right" class="btn btn-success btn-sm pull-right">Add To Cart</button>
+    </form>
+  </td>
+</tr>

@@ -1,0 +1,60 @@
+﻿@{
+  Layout = "_CartLayout";
+}
+@model CartViewModel
+
+<h1 style="font-family:'Harlow Solid'; font-weight:bolder">Shopping Cart</h1>
+<table class="table table-hover table-striped">
+  <thead>
+    <tr>
+      <td>Quantity</td>
+      <td>Item</td>
+      <td class="text-right">Price</td>
+      <td class="text-right">Subtotal</td>
+      <td class="text-right"></td>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var line in Model.Cart.cartLines)
+    {
+      <tr>
+        <td class="text-center">
+          <div class="btn-group">
+            <form asp-action="DecreasLine" method="post">
+              <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+              <input type="hidden" name="ProductID" value="@line.Product.ProductID" />
+              <button type="submit" class="btn btn-sm btn-secondary fw-bolder">-</button>
+            </form>
+            <span class="px-3">@line.Quantity</span>
+            <form asp-action="IncreasLine" method="post">
+              <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+              <input type="hidden" name="ProductID" value="@line.Product.ProductID" />
+              <button type="submit" class="btn btn-sm btn-secondary fw-bolder">+</button>
+            </form>
+          </div>
+        </td>
+        <td class="text-right">@line.Product.Name</td>
+        <td class="text-right">@line.Product.Price.ToString("c")</td>
+        <td class="text-right">@((line.Quantity * line.Product.Price).ToString("c"))</td>
+        <td class="text-right">
+          <form asp-action="RemoveLine" method="post">
+            <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
+            <input type="hidden" name="ProductID" value="@line.Product.ProductID" />
+            <button type="submit" class="btn btn-danger">Remove Item</button>
+          </form>
+        </td>
+        <td class="text-right"></td>
+      </tr>
+    }
+  </tbody>
+  <tfoot>
+    <tr class="text-right fw-bolder">
+      <td colspan="3">Total</td>
+      <td>@Model.Cart.ComuteTotalValue().ToString("c")</td>
+    </tr>
+  </tfoot>
+</table>
+<div class="text-center">
+  <a href="@Model.ReturnUrl" class="btn btn-primary">Continue Shopping</a>
+  <a class="btn btn-dark" asp-action="Checkout" asp-controller="Order">Chackout</a>
+</div>
